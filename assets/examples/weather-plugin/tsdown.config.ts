@@ -1,0 +1,65 @@
+/**
+ * tsdown preset for weather-plugin: an ESM node half with declarations plus a
+ * browser half (lib/client.js) wrapped for the harness client-plugin loader.
+ * All @deepseek-ai packages are type-only imports in the node half (erased at
+ * build); schemastery stays unbundled because the Loader validates the plugin's
+ * `Config` schema and must see its own instances. The browser half keeps the
+ * platform module table external (React, Cordis, loader seeds) and bundles the
+ * shared fragment contract inline.
+ */
+import type { UserConfig } from 'tsdown'
+
+const PLUGIN_ID = '@demo/weather-plugin'
+
+/** Module specifiers the dsh web shell shares into its frozen module table. */
+const PLATFORM_MODULES = [
+  'react', 'react/jsx-runtime', 'react-dom', 'react-dom/client', '@deepseek-ai/cordis',
+  '@deepseek-ai/dsh-client-ui-slots',
+  '@deepseek-ai/dsh-client-web-react',
+  '@deepseek-ai/dsh-client-ui-primitives',
+] as const
+
+/** Externals resolved from the loader module table. */
+const CLIENT_EXTERNALS: readonly string[] = [...PLATFORM_MODULES, '@deepseek-ai/dsh-client-runtime/client']
+
+export default [
+  {
+    entry: { index: 'src/index.ts' },
+    outDir: 'lib',
+    format: ['esm'],
+    platform: 'node',
+    target: 'es2024',
+    fixedExtension: false,
+    dts: true,
+    clean: true,
+    deps: {
+      // schemastery stays unbundled because the Loader validates the plugin's
+      // `Config` schema and must see its own instance; cordis is type-only here.
+      neverBundle: ['@deepseek-ai/schemastery', '@deepseek-ai/cordis'],
+    },
+  },
+  {
+    // Browser bundle: lib/client.js, served by the harness at /plugins/<id>/client.js.
+    entry: { client: 'src/client/index.tsx' },
+    outDir: 'lib',
+    format: 'cjs',
+    platform: 'browser',
+    dts: false,
+    clean: false,
+    deps: {
+      neverBundle: [...CLIENT_EXTERNALS],
+    },
+    define: {
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV ?? 'production'),
+    },
+    outputOptions: {
+      entryFileNames: 'client.js',
+      // One classic script is all the loader fetches: a dynamic import must be
+      // inlined rather than split into a chunk nothing can load.
+      inlineDynamicImports: true,
+      banner: `window.__ModuleLoader__.load({ id: ${JSON.stringify(PLUGIN_ID)}, factory: (require) => {`,
+      footer: `return module.exports; } });`,
+      intro: 'var module = { exports: {} }; var exports = module.exports;',
+    },
+  },
+] satisfies UserConfig[]

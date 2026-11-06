@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>工作台 · your-plugin</title>
+  <!-- 主题同步脚本放 <head> 同步执行，防止深色模式下闪白屏 -->
+  <script src="scheme.js"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="wrap">
+    <header class="head">
+      <h1>工作台</h1>
+      <p class="sub">骨架演示页：数据由 dsh 插件的 Host 半边伺服，与对话里的工具读写同一份。</p>
+    </header>
+
+    <form id="add-form" class="row">
+      <input id="add-text" type="text" placeholder="记一条备忘…" autocomplete="off" maxlength="2000">
+      <button type="submit">记下</button>
+    </form>
+
+    <section id="memo-list" class="memos" aria-live="polite"></section>
+
+    <footer class="foot">
+      <button id="draft-btn" type="button">在对话里填一条草稿</button>
+      <span id="toast" class="toast" hidden></span>
+    </footer>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>

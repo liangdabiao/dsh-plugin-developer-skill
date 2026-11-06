@@ -1,0 +1,74 @@
+{
+  "name": "@demo/ecom-details-image-plugin",
+  "version": "0.1.0",
+  "description": "电商图片生成：根据商品信息与视觉规范生成产品主图/详情页/社媒/直播等全套图片（GPT-Image-2 / OpenAI 兼容 API，异步轮询）。",
+  "license": "MIT",
+  "type": "module",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./lib/index.d.ts",
+      "default": "./lib/index.js"
+    },
+    "./client": "./lib/client.js",
+    "./cordis.patch.yml": "./cordis.patch.yml",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib",
+    "assets",
+    "cordis.patch.yml"
+  ],
+  "engines": {
+    "dsh": ">=0.0.1"
+  },
+  "dshx": {
+    "contributes": {
+      "tools": [
+        "ecom_generate_image"
+      ],
+      "skills": [
+        "ecom-details-image"
+      ]
+    }
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "inject": [
+        "@deepseek-ai/dsh-client-runtime"
+      ],
+      "platform": "web"
+    }
+  },
+  "peerDependencies": {
+    "@deepseek-ai/cordis": "^4.0.1-rc.1",
+    "@deepseek-ai/dsh-llm": "*",
+    "@deepseek-ai/dsh-session": "*",
+    "@deepseek-ai/dsh-skill": "*",
+    "@deepseek-ai/dsh-system-prompt": "*",
+    "@deepseek-ai/dsh-tools": "*",
+    "@deepseek-ai/schemastery": "^3.18.1-rc.1",
+    "react": "^18.2.0"
+  },
+  "devDependencies": {
+    "@deepseek-ai/dsh-client-ui-primitives": "^0.0.1-rc.1",
+    "@deepseek-ai/dsh-client-ui-slots": "^0.0.1-rc.1",
+    "@deepseek-ai/dsh-client-ui-tool": "^0.0.1-rc.1",
+    "@deepseek-ai/dsh-client-web-react": "^0.0.1-rc.1",
+    "@types/react": "^19.2.18",
+    "tsdown": "^0.19.0",
+    "typescript": "^5.9.3",
+    "unrun": "^0.2.39"
+  },
+  "dependencies": {
+    "undici": "^7.2.3"
+  },
+  "scripts": {
+    "build": "powershell -ExecutionPolicy Bypass -File scripts/build.ps1",
+    "typecheck": "tsc -p tsconfig.json && tsc -p tsconfig.client.json"
+  }
+}

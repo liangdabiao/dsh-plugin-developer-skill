@@ -1,0 +1,72 @@
+{
+  "name": "@demo/weather-plugin",
+  "version": "0.1.0",
+  "description": "查询城市实时天气，并以带动效的天气卡片展示（晴天/多云/阴/雾/雨/雪/雷暴动画）。",
+  "license": "MIT",
+  "type": "module",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./lib/index.d.ts",
+      "default": "./lib/index.js"
+    },
+    "./client": "./lib/client.js",
+    "./cordis.patch.yml": "./cordis.patch.yml",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib",
+    "assets",
+    "cordis.patch.yml"
+  ],
+  "engines": {
+    "dsh": ">=0.0.1"
+  },
+  "dshx": {
+    "contributes": {
+      "tools": [
+        "weather"
+      ],
+      "skills": [
+        "weather-briefing"
+      ]
+    }
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "inject": [
+        "@deepseek-ai/dsh-client-runtime"
+      ],
+      "platform": "web"
+    }
+  },
+  "peerDependencies": {
+    "@deepseek-ai/cordis": "^4.0.1-rc.1",
+    "@deepseek-ai/dsh-llm": "*",
+    "@deepseek-ai/dsh-session": "*",
+    "@deepseek-ai/dsh-skill": "*",
+    "@deepseek-ai/dsh-system-prompt": "*",
+    "@deepseek-ai/dsh-tools": "*",
+    "@deepseek-ai/schemastery": "^3.18.1-rc.1",
+    "react": "^18.2.0"
+  },
+  "devDependencies": {
+    "@deepseek-ai/dsh-client-ui-primitives": "^0.0.1-rc.1",
+    "@deepseek-ai/dsh-client-ui-slots": "^0.0.1-rc.1",
+    "@deepseek-ai/dsh-client-ui-tool": "^0.0.1-rc.1",
+    "@deepseek-ai/dsh-client-web-react": "^0.0.1-rc.1",
+    "@types/react": "^19.2.18",
+    "tsdown": "^0.19.0",
+    "typescript": "^5.9.3",
+    "unrun": "^0.2.39"
+  },
+  "scripts": {
+    "build": "bash scripts/build.sh",
+    "test": "bash scripts/test.sh",
+    "typecheck": "tsc -p tsconfig.json && tsc -p tsconfig.client.json"
+  }
+}

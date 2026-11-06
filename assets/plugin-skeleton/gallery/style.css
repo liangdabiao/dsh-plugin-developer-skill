@@ -1,0 +1,37 @@
+/* 跟随主题的少量变量；复杂样式请用 dsh 的 CSS alias 变量（见 references/browser-side.md） */
+:root {
+  --bg: #f7f7f8; --fg: #1a1a1a; --muted: #6b6b70; --card: #ffffff; --line: #e3e3e6; --accent: #4d6bfe;
+}
+html[data-dark] {
+  --bg: #16161a; --fg: #ececf1; --muted: #9a9aa2; --card: #1e1e24; --line: #333339;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--bg); color: var(--fg);
+  font: 14px/1.6 -apple-system, "Segoe UI", "Microsoft YaHei", sans-serif;
+}
+.wrap { max-width: 720px; margin: 0 auto; padding: 24px 20px 48px; }
+.head h1 { margin: 0 0 4px; font-size: 20px; }
+.sub { margin: 0 0 20px; color: var(--muted); }
+.row { display: flex; gap: 8px; margin-bottom: 16px; }
+.row input {
+  flex: 1; padding: 8px 12px; border: 1px solid var(--line); border-radius: 8px;
+  background: var(--card); color: var(--fg); outline: none;
+}
+.row input:focus { border-color: var(--accent); }
+.row button, .foot button {
+  padding: 8px 16px; border: none; border-radius: 8px; cursor: pointer;
+  background: var(--accent); color: #fff; font-size: 14px;
+}
+.memos { display: grid; gap: 8px; }
+.memo {
+  padding: 10px 12px; background: var(--card); border: 1px solid var(--line); border-radius: 10px;
+  display: flex; gap: 10px; align-items: baseline;
+}
+.memo time { color: var(--muted); font-size: 12px; white-space: nowrap; }
+.memo .text { flex: 1; word-break: break-word; }
+.memo .del { border: none; background: none; color: var(--muted); cursor: pointer; }
+.empty { color: var(--muted); text-align: center; padding: 32px 0; }
+.foot { margin-top: 24px; display: flex; align-items: center; gap: 12px; }
+.foot button { background: var(--card); color: var(--fg); border: 1px solid var(--line); }
+.toast { color: var(--muted); font-size: 12px; }

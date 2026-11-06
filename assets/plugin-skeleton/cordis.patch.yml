@@ -1,0 +1,7 @@
+# dsh bundle patch：把本插件作为一个 Cordis 插件实例 insert 进宿主服务表。
+# Host 半边按 package.json 的 main（src/host.js）加载并调用 apply(ctx, config)；
+# 浏览器半边由 package.json 的 dsh.client 声明加载 ./client 导出（dist/client.js）。
+# 这个文件照抄改个名就行：id 是插件实例 id（与 client 里的面板 id 对应），name 是 npm 包名。
+- insert:
+    - id: your-plugin
+      name: 'dsh-your-plugin'

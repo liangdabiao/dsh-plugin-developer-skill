@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>weather-plugin 动效预览</title>
+<style>
+  body{margin:0;background:#eef1f6;font-family:'PingFang SC','Microsoft YaHei',sans-serif;padding:24px 16px 60px;}
+  .head{max-width:460px;margin:0 auto 18px;}
+  .head h1{font-size:20px;margin:0 0 4px;color:#1c2b4a;}
+  .head p{font-size:13px;color:#5b6b85;margin:0;line-height:1.6;}
+  .ctrl{max-width:460px;margin:0 auto 16px;background:#fff;border-radius:14px;padding:12px 14px;
+    box-shadow:0 4px 14px rgba(30,50,90,.08);}
+  .ctrl .lab{font-size:12px;color:#7a8aa5;margin-bottom:8px;}
+  .ctrl .btns{display:flex;flex-wrap:wrap;gap:8px;}
+  .btn{border:1px solid #d6deec;background:#f7f9fd;color:#33466b;border-radius:20px;
+    padding:5px 13px;font-size:13px;cursor:pointer;}
+  .btn.active{background:#2e5fd0;border-color:#2e5fd0;color:#fff;}
+  .btn.ghost{border-style:dashed;}
+  .cityline{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;}
+  .cardbox{max-width:460px;margin:0 auto;}
+  .foot{max-width:460px;margin:16px auto 0;font-size:12px;color:#8a97ad;line-height:1.7;}
+
+  /* ===== 以下为 weather-plugin 浏览器端组件（src/client/index.tsx）的动画样式 ===== */
+  .wea{font-family:'PingFang SC','Microsoft YaHei',sans-serif;border-radius:16px;overflow:hidden;
+    color:#fff;box-shadow:0 8px 24px rgba(0,0,0,.15);position:relative;min-height:210px;
+    background:linear-gradient(180deg,#5b9df0,#a8d4f7);}
+  .wea.wea-night{background:linear-gradient(180deg,#1c2b4a,#3a5a8c);}
+  .wea .scene{position:relative;height:132px;overflow:hidden;}
+  .wea .big{font-size:52px;line-height:1;position:absolute;right:22px;top:14px;filter:drop-shadow(0 4px 8px rgba(0,0,0,.2));z-index:2;}
+  .wea .row{padding:12px 18px 16px;background:rgba(0,0,0,.10);}
+  .wea .city{font-size:15px;font-weight:600;opacity:.92;}
+  .wea .temp{font-size:38px;font-weight:700;line-height:1.1;margin:2px 0;}
+  .wea .desc{font-size:13px;opacity:.92;}
+  .wea .tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;}
+  .wea .tag{font-size:12px;background:rgba(255,255,255,.22);border-radius:20px;padding:2px 10px;}
+
+  @keyframes wea-spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+  .wea-sun{position:absolute;left:26px;top:18px;width:64px;height:64px;}
+  .wea-sun .core{position:absolute;inset:16px;border-radius:50%;background:#FFD34E;}
+  .wea-sun .rays{position:absolute;inset:0;border-radius:50%;border:3px dashed rgba(255,211,78,.7);
+    animation:wea-spin 12s linear infinite;}
+
+  @keyframes wea-drift{0%,100%{transform:translateX(0)}50%{transform:translateX(34px)}}
+  .wea-cloud{position:absolute;background:#fff;border-radius:24px;opacity:.95;
+    animation:wea-drift 5s ease-in-out infinite;}
+  .wea-cloud:before{content:"";position:absolute;top:-14px;left:14px;width:34px;height:34px;border-radius:50%;background:inherit;}
+  .wea-cloud:after{content:"";position:absolute;top:-8px;left:34px;width:24px;height:24px;border-radius:50%;background:inherit;}
+
+  @keyframes wea-rain{0%{transform:translateY(-12px);opacity:0}25%{opacity:1}
+    100%{transform:translateY(112px);opacity:0}}
+  .wea-rainline{position:absolute;top:0;width:2px;height:16px;background:rgba(255,255,255,.85);
+    border-radius:2px;animation:wea-rain .9s linear infinite;}
+
+  @keyframes wea-snow{0%{transform:translate(0,-10px) rotate(0)}50%{transform:translate(18px,60px) rotate(180deg)}
+    100%{transform:translate(-6px,118px) rotate(360deg)}}
+  .wea-snowflake{position:absolute;top:-8px;color:#fff;font-size:14px;text-shadow:0 0 4px rgba(255,255,255,.6);
+    animation:wea-snow 3.2s linear infinite;}
+
+  @keyframes wea-flash{0%,92%,100%{opacity:0}94%,97%{opacity:1}}
+  .wea-bolt{position:absolute;color:#FFE066;font-size:30px;opacity:0;
+    animation:wea-flash 2.4s linear infinite;}
+
+  @keyframes wea-fog{0%{transform:translateX(-30%)}100%{transform:translateX(110%)}}
+  .wea-fogband{position:absolute;height:16px;border-radius:12px;background:rgba(255,255,255,.55);
+    animation:wea-fog 7s linear infinite;}
+
+  @keyframes wea-breathe{0%,100%{opacity:.4;transform:scale(.96)}50%{opacity:1;transform:scale(1.02)}}
+  .wea-load{display:flex;flex-direction:column;align-items:center;justify-content:center;height:210px;gap:10px;
+    background:linear-gradient(180deg,#5b9df0,#a8d4f7);color:#fff;font-size:14px;}
+  .wea-load .dot{width:34px;height:34px;border:4px solid rgba(255,255,255,.35);border-top-color:#fff;
+    border-radius:50%;animation:wea-spin .9s linear infinite;}
+  .wea-load .tx{animation:wea-breathe 1.6s ease-in-out infinite;}
+</style>
+</head>
+<body>
+
+<div class="head">
+  <h1>🌦 weather-plugin · 动效天气卡片预览</h1>
+  <p>这是 dsh 插件浏览器端组件（Toolview）的独立演示。点击下方切换城市/天气类型，观察不同动效；也可模拟真实调用中的加载态。</p>
+</div>
+
+<div class="ctrl">
+  <div class="lab">天气类型（驱动动效）：</div>
+  <div class="btns" id="typeBtns"></div>
+  <div class="lab" style="margin-top:12px">模拟城市（本地演示数据）：</div>
+  <div class="cityline" id="cityBtns"></div>
+  <div class="lab" style="margin-top:12px">其他：</div>
+  <div class="btns">
+    <button class="btn ghost" id="loadBtn">⏳ 模拟加载态（3 秒）</button>
+    <button class="btn ghost" id="randomBtn">🎲 随机切换</button>
+  </div>
+</div>
+
+<div class="cardbox" id="stage"></div>
+
+<div class="foot">
+  说明：此页面把插件 <code>src/client/index.tsx</code> 中的动画样式与组件逻辑独立出来做交互演示；在真实 dsh 中，
+  weather 工具执行后把 <code>meta.info</code>（含 type 字段）传给此组件即可渲染同款动效。支持类型：
+  晴 ☀️ / 多云 ⛅ / 阴 ☁️ / 雾 🌫️ / 雨 🌧️ / 雪 🌨️ / 雷暴 ⛈️，夜间自动切深色。
+</div>
+
+<script>
+(function () {
+  // ===== 与 src/client/index.tsx 相同的场景渲染逻辑（精简为字符串模板） =====
+  var EMOJI = { sunny: '☀️', partly: '⛅', cloudy: '☁️', fog: '🌫️', rain: '🌧️', snow: '🌨️', storm: '⛈️' };
+
+  function sceneHTML(type, isDay) {
+    var dark = !isDay;
+    var s = '';
+    if (type === 'sunny') {
+      s += '<div class="wea-sun"><div class="rays"></div><div class="core"></div></div>';
+    } else if (type === 'partly' || type === 'cloudy') {
+      if (type === 'partly') s += '<div class="wea-sun" style="width:44px;height:44px;left:18px;top:20px"><div class="rays"></div><div class="core" style="inset:11px"></div></div>';
+      s += '<div class="wea-cloud" style="width:72px;height:26px;left:' + (type === 'cloudy' ? 22 : 66) + 'px;top:' + (type === 'cloudy' ? 40 : 58) + 'px"></div>';
+      s += '<div class="wea-cloud" style="width:56px;height:20px;left:96px;top:86px;animation-delay:1.2s;opacity:.8"></div>';
+    } else if (type === 'rain') {
+      s += '<div class="wea-cloud" style="width:80px;height:28px;left:30px;top:22px"></div>';
+      var xs = [22, 48, 74, 100, 126];
+      for (var i = 0; i < xs.length; i++) s += '<div class="wea-rainline" style="left:' + xs[i] + 'px;animation-delay:' + (i * 0.18) + 's"></div>';
+    } else if (type === 'snow') {
+      s += '<div class="wea-cloud" style="width:80px;height:28px;left:30px;top:18px;background:#dfe8f5"></div>';
+      var sx = [26, 58, 90, 122];
+      for (var j = 0; j < sx.length; j++) s += '<div class="wea-snowflake" style="left:' + sx[j] + 'px;animation-delay:' + (j * 0.7) + 's;font-size:' + (14 + (j % 3) * 3) + 'px">❄</div>';
+    } else if (type === 'storm') {
+      s += '<div class="wea-cloud" style="width:96px;height:32px;left:20px;top:18px;background:#aeb9cc"></div>';
+      s += '<div class="wea-bolt" style="left:44px;top:66px">⚡</div>';
+      s += '<div class="wea-bolt" style="left:96px;top:88px;animation-delay:1.1s">⚡</div>';
+    } else if (type === 'fog') {
+      for (var k = 0; k < 3; k++) s += '<div class="wea-fogband" style="width:' + (220 - k * 40) + 'px;top:' + (36 + k * 26) + 'px;opacity:' + (0.9 - k * 0.22) + ';animation-delay:' + (k * 1.6) + 's;animation-duration:' + (7 + k * 2) + 's"></div>';
+    }
+    if (dark) s += '<div class="wea-sun" style="width:40px;height:40px;left:22px;top:16px"><div class="rays"></div><div class="core" style="inset:10px;background:#E8ECF5"></div></div>';
+    return s;
+  }
+
+  function cardHTML(type, isDay, city, temp, range, wind) {
+    return '<div class="wea' + (isDay ? '' : ' wea-night') + '">' +
+      '<div class="scene"><div class="big">' + (EMOJI[type] || '🌤️') + '</div>' + sceneHTML(type, isDay) + '</div>' +
+      '<div class="row"><div class="city">📍 ' + city + '</div>' +
+      '<div class="temp">' + temp + '</div>' +
+      '<div class="desc">体感 ' + temp + ' · ' + wind + '</div>' +
+      '<div class="tags"><span class="tag">' + range + '</span><span class="tag">' + (isDay ? '白天' : '夜间') + '</span><span class="tag">更新于 12:30</span></div>' +
+      '</div></div>';
+  }
+
+  // ===== 演示数据：各城市天气（本地 mock，不代表真实预报） =====
+  var CITIES = [
+    { name: '北京', type: 'sunny',  isDay: true,  temp: '26°C', range: '18~29°C', wind: '西南风 12km/h' },
+    { name: '上海', type: 'rain',   isDay: true,  temp: '23°C', range: '20~25°C', wind: '东风 18km/h' },
+    { name: '广州', type: 'storm',  isDay: false, temp: '28°C', range: '24~31°C', wind: '南风 22km/h' },
+    { name: '哈尔滨', type: 'snow', isDay: true,  temp: '-4°C', range: '-9~1°C',  wind: '西北风 15km/h' },
+    { name: '成都', type: 'fog',    isDay: true,  temp: '17°C', range: '13~20°C', wind: '静风 3km/h' },
+    { name: '杭州', type: 'partly', isDay: true,  temp: '25°C', range: '19~28°C', wind: '东南风 10km/h' },
+    { name: '重庆', type: 'cloudy', isDay: false, temp: '21°C', range: '18~24°C', wind: '东北风 8km/h' },
+  ];
+
+  var TYPES = [
+    { id: 'sunny',  label: '晴 ☀️' }, { id: 'partly', label: '多云 ⛅' },
+    { id: 'cloudy', label: '阴 ☁️' }, { id: 'fog',    label: '雾 🌫️' },
+    { id: 'rain',   label: '雨 🌧️' }, { id: 'snow',   label: '雪 🌨️' },
+    { id: 'storm',  label: '雷暴 ⛈️' },
+  ];
+
+  var stage = document.getElementById('stage');
+
+  // 支持 URL 参数：?type=rain&city=2 指定初始天气/城市（便于演示与分享）
+  var qs = new URLSearchParams(location.search);
+  var qType = qs.get('type');
+  var qCity = qs.get('city');
+  var currentType = TYPES.some(function (t) { return t.id === qType; }) ? qType : 'sunny';
+  var ci = parseInt(qCity || '0', 10);
+  var currentCity = CITIES[ci >= 0 && ci < CITIES.length ? ci : 0];
+  if (TYPES.some(function (t) { return t.id === currentType; }) && qType) {
+    // 指定类型时保持城市底子，仅覆盖类型
+  }
+
+  function render() {
+    var c = currentCity;
+    // 点类型按钮时以当前城市为底，只换天气类型
+    var base = Object.assign({}, c, { type: currentType });
+    if (currentType === 'rain' || currentType === 'snow' || currentType === 'storm') base.temp = c.temp;
+    stage.innerHTML = cardHTML(base.type, base.isDay, base.name, base.temp, base.range, base.wind);
+  }
+
+  function buildButtons() {
+    var tb = document.getElementById('typeBtns');
+    tb.innerHTML = '';
+    TYPES.forEach(function (t) {
+      var b = document.createElement('button');
+      b.className = 'btn' + (t.id === currentType ? ' active' : '');
+      b.textContent = t.label;
+      b.onclick = function () { currentType = t.id; refreshActive(); render(); };
+      tb.appendChild(b);
+    });
+    var cb = document.getElementById('cityBtns');
+    cb.innerHTML = '';
+    CITIES.forEach(function (c, i) {
+      var b = document.createElement('button');
+      b.className = 'btn' + (i === 0 ? ' active' : '');
+      b.textContent = c.name + (c.isDay ? '' : ' 🌙');
+      b.dataset.i = i;
+      b.onclick = function () {
+        currentCity = c; currentType = c.type; refreshActive();
+        Array.prototype.forEach.call(cb.children, function (x, j) { x.className = 'btn' + (j === i ? ' active' : ''); });
+        render();
+      };
+      cb.appendChild(b);
+    });
+  }
+
+  function refreshActive() {
+    var tb = document.getElementById('typeBtns');
+    TYPES.forEach(function (t, i) {
+      tb.children[i].className = 'btn' + (t.id === currentType ? ' active' : '');
+    });
+  }
+
+  document.getElementById('loadBtn').onclick = function () {
+    stage.innerHTML = '<div class="wea-load"><div class="dot"></div><div class="tx">正在查询天气…</div></div>';
+    setTimeout(render, 3000);
+  };
+
+  document.getElementById('randomBtn').onclick = function () {
+    var t = TYPES[Math.floor(Math.random() * TYPES.length)];
+    currentType = t.id;
+    var c = CITIES[Math.floor(Math.random() * CITIES.length)];
+    currentCity = c;
+    refreshActive();
+    render();
+  };
+
+  buildButtons();
+  render();
+})();
+</script>
+</body>
+</html>

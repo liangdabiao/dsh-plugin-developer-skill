@@ -1,0 +1,4 @@
+# dsh bundle patch: inserts this plugin into a profile's layer stack.
+- insert:
+    - id: ecom-details-image-plugin
+      name: '@demo/ecom-details-image-plugin'
