@@ -33,10 +33,10 @@ ctx.effect(() =>
 **web 服务不替插件路由鉴权——每个请求都要自己走一遍**（media-desk 原话）。三件套：
 
 ```js
-// ① 登录凭证：交给宿主 connection 服务判定；拿不到鉴权服务一律拒绝（fail closed）
+// ① 登录凭证：dsh 0.2.x 宿主已用 URL token 统一鉴权（无 token 401 在插件之前拦截）。
 export function requestRejection(ctx, req) {
   const connection = ctx.get('connection')
-  if (typeof connection?.requestRejection !== 'function') return 403
+  if (typeof connection?.requestRejection !== 'function') return false   // 服务缺席=宿主 token 已把关，放行；fail-closed 会把面板永久 403
   return connection.requestRejection({ headers: req.headers })   // 返回数字=拒绝状态码，falsy=放行
 }
 

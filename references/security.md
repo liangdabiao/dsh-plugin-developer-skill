@@ -15,7 +15,7 @@
 
 | 风险 | 对策 | 参考实现 |
 | --- | --- | --- |
-| 未登录访问 | 每个请求过 `connection.requestRejection`；拿不到鉴权服务返回 403（fail closed） | media-desk `src/host.js` `requestRejection` |
+| 未登录访问 | 宿主 webServer URL token 统一鉴权（无 token 401）；插件内 connection.requestRejection 是可选深度防御，服务缺席放行 | media-desk `src/host.js` `requestRejection` |
 | 跨站写 | 写请求检查 `sec-fetch-site` ∈ {same-origin, none}，否则 403 | media-desk `host.js:319` |
 | 跨域伪造 | `Origin` 必须与 `Host` 同源；`readJson` 里强制 | guizang `lib/index.js` `readJson` |
 | 请求体炸弹 | JSON 16KB~4MB 上限、上传单独设限（如 250MB），超限 `req.destroy()`+413 | guizang readJson / media-desk |

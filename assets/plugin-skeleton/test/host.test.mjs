@@ -87,9 +87,9 @@ test('Config：schema 校验并填充默认值', () => {
   assert.equal(typeof result.value.greeting, 'string')
 })
 
-test('requestRejection：拿不到鉴权服务时拒绝（fail closed）', () => {
+test('requestRejection：无 connection 服务时放行（宿主 token 已把关）', () => {
   const noService = { get: () => undefined }
-  assert.equal(requestRejection(noService, { headers: {} }), 403)
+  assert.equal(requestRejection(noService, { headers: {} }), false)
   const okService = { get: () => ({ requestRejection: () => false }) }
   assert.equal(requestRejection(okService, { headers: {} }), false) // false = 放行
 })

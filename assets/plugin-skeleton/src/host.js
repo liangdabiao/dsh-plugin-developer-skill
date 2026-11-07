@@ -283,7 +283,7 @@ function readJson(req) {
 // 导出是为了测试。
 export function requestRejection(ctx, req) {
   const connection = ctx.get('connection')
-  if (typeof connection?.requestRejection !== 'function') return 403 // 拿不到鉴权服务一律拒绝
+  if (typeof connection?.requestRejection !== 'function') return false // dsh 0.2.x 宿主 webServer 已用 URL token 鉴权（无 token 401 在插件之前拦截）；服务缺席时放行，fail-closed 反而会把面板永久 403
   return connection.requestRejection({ headers: req.headers })
 }
 

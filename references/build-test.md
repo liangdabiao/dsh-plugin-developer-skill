@@ -127,7 +127,7 @@ exec dsh --profile web --no-open --port 4311
    - 原子写、双进程 mtime 重读（两个 Store 实例同目录互读）；
    - skill：候选齐全、addendum 存在、正文无 git 命令、附注无 `.mjs`；
    - Config schema 校验与默认值；
-   - 鉴权降级：拿不到 connection 服务返回 403（fail closed）。
+   - 鉴权深度防御：connection.requestRejection 服务存在才执行；缺席放行（宿主 token 是边界，0.2.x 无此服务，fail-closed 会 403 全部面板请求）。
    - **关键技巧**：测试开头 `process.env.DSH_HOME = mkdtempSync(...)`，**必须在 import 模块之前**（ESM 顶层 `await import`）。
 2. **依赖注入**：所有 I/O 函数留注入参数（`fetchImpl`、`exec`、时钟）——测试替换，不碰真实网络（media-desk 全套做法）。
 3. **Host 集成测试**（geochat/dsh-context 做法）：真 `new Context()` + 真 ToolRuntime/SkillRegistry + 假宿主服务（fake lease/store），验证注册、会话绑定拒绝伪造 sessionId、工具描述规范。
