@@ -151,7 +151,7 @@ function apply(ctx) {
 }
 ```
 
-- **流式预览**：`!('kind' in block)` 分支就是加载态（耗时工具先出骨架屏，完成无缝切换，ecom 出图插件实证）。
+- **流式预览**：`!('kind' in block)` 分支就是加载态（耗时工具先出骨架屏，完成无缝切换）；面板轮询进度见 `assets/examples/dsh-seedance-studio/client.js`。
 - **降级**：meta 缺失/字段不全时回退文本（`block.content` 首行），不留白屏；本地校验，畸形输入返回通用行。
 - **数据从哪来**：Host 工具的 `output.presentationMeta`（tool-plugin.md）；客户端不重复执行 Node 逻辑。别把 React props 或 UI 状态存进 meta。
 

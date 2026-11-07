@@ -1,6 +1,6 @@
 ---
 name: dsh-plugin-developer
-description: 指导并帮助开发 DeepSeek Harness（dsh）插件与功能（目标 dsh 0.2.x）。当用户要求开发/编写/创建/搭建 dsh 插件、或为 dsh 增加新能力时使用，包括：工具（Tool，defineTool 与原生注册、presentationMeta、UI 卡片）、技能（SkillProvider、快照聚合、rewrite/addendum）、系统提示注入、调外部 API 的工具（异步作业+轮询、代理出网、附件转图生图）、插件页面（侧栏/会话标签页/右侧面板/斜杠命令/设置卡片）、webServer HTTP 路由与每请求鉴权、$DSH_HOME 数据持久化、宿主模型调用、后台任务、i18n、浏览器端组件（Toolview/沙箱/CSP/主题）、安全加固清单、双端构建（JS 零构建与 TS 双端）、免额度测试（mock-llm/dev-sandbox）、打包发布与版本兼容（engines.dsh/npm/tgz/桌面版差异）、诊断 dsh 插件报错与常见坑；或直接生成 dsh 插件项目脚手架。内置完整可运行的 0.2.x 骨架（assets/plugin-skeleton，工具+技能+系统提示+插件页面+数据持久化闭环，9 个单测）与两个历史实战案例。基于官方文档与 dsh-context、dsh-guizang-design、dsh-media-desk、GeoChat 四个已上架开源插件的实战经验。
+description: 指导并帮助开发 DeepSeek Harness（dsh）插件与功能（目标 dsh 0.2.x）。当用户要求开发/编写/创建/搭建 dsh 插件、或为 dsh 增加新能力时使用，包括：工具（Tool，defineTool 与原生注册、presentationMeta、UI 卡片）、技能（SkillProvider、快照聚合、rewrite/addendum）、系统提示注入、调外部 API 的工具（异步作业+轮询、代理出网、附件转图生图、外部 CLI 集成）、插件页面（侧栏/会话标签页/右侧面板/斜杠命令/设置卡片）、webServer HTTP 路由与每请求鉴权、$DSH_HOME 数据持久化、宿主模型调用、后台任务、i18n、浏览器端组件（Toolview/沙箱/CSP/主题）、安全加固清单、双端构建（JS 零构建与 TS 双端）、免额度测试（mock-llm/dev-sandbox）、打包发布与版本兼容（engines.dsh/npm/tgz/桌面版差异）、诊断 dsh 插件报错与常见坑；或直接生成 dsh 插件项目脚手架。内置完整可运行的 0.2.x 骨架（assets/plugin-skeleton，工具+技能+系统提示+插件页面+数据持久化闭环，9 个单测）、一个 0.2.x 实战案例（assets/examples/dsh-seedance-studio，外部 CLI 生成工具+侧栏面板+skill 快照）与一个历史案例（weather-plugin）。基于官方文档与 dsh-context、dsh-guizang-design、dsh-media-desk、GeoChat 四个已上架开源插件的实战经验。
 ---
 
 # dsh 插件开发（0.2.x）
@@ -64,7 +64,7 @@ python scripts/scaffold_plugin.py <项目目录> --name dsh-my-plugin
 - **工具** → [tool-plugin.md](references/tool-plugin.md)：defineTool vs 原生注册、exec 上下文、output 规范值契约、presentationMeta、presentCall/presentResult 卡片、错误处理。
 - **技能** → [skill-plugin.md](references/skill-plugin.md)：两级加载、Candidate 字段、目录聚合、快照 vendor、rewrite+addendum、rank 让位。
 - **系统提示** → [system-prompt.md](references/system-prompt.md)：锚点 order、interpolate、prefix/suffix。
-- **调外部 API** → [http-client.md](references/http-client.md)：异步作业+轮询、可注入 fetch、undici 代理、附件转图生图。
+- **调外部 API** → [http-client.md](references/http-client.md)：异步作业+轮询、可注入 fetch、undici 代理、附件转图生图、外部 CLI 型工具。
 - **插件页面/HTTP/数据** → [web-and-data.md](references/web-and-data.md) + [browser-side.md](references/browser-side.md)：前缀路由、鉴权三件套、safeFile、$DSH_HOME 模式；槽位地图、iframe 通信、startSession、主题、i18n、Toolview。
 - **深度集成** → [host-integration.md](references/host-integration.md)：事件四模式、调用宿主模型、后台任务、agent.inject 通知。
 - **安全** → [security.md](references/security.md)：发布前逐条过清单。
@@ -119,7 +119,7 @@ node scripts/mock-llm.mjs     # ③ mock 模型：不花额度跑全链路（模
 ## 实战案例
 
 - **`assets/plugin-skeleton/`**：0.2.x 可运行骨架（首选蓝本）。
+- **`assets/examples/dsh-seedance-studio/`**：**0.2.x 实战案例**（用本 Skill 制作）。演示：随包 skill 快照 + 富 addendum（执行顺序/费用纪律）、多动作工具（action 枚举 + 积分上限 + dryRun + 路径越界拒绝）、外部官方 CLI 集成（dreamina-canvas 登录/画布/生成/轮询终态）、webServer 只读接口、侧栏面板（2s 轮询进度，与工具共用同一套校验）、离线自检脚本。对应"调外部生成 API/CLI 的工具"类需求。
 - **`assets/examples/weather-plugin/`**：查天气 + 动效卡片（**0.1.x 历史案例**，构建链已过时；工具/技能/系统提示/Toolview 的 API 思路仍适用）。
-- **`assets/examples/ecom-details-image-plugin/`**：Claude Skill 改造成 dsh 插件 + 代理异步出图 + 画廊卡片（**0.1.x 历史案例**；异步作业/代理/附件方案的思路仍适用）。
 
 > 四个已上架的开源参考实现（模式对照表见 architecture.md 末尾）：[dsh-context](https://github.com/bowenliang123/dsh-context)（仪表板/命令/设置卡片/兼容层）、[dsh-guizang-design](https://github.com/op7418/dsh-guizang-design)（技能包+页面+工具+数据）、[dsh-media-desk](https://github.com/woniuniuniu/dsh-media-desk)（Web 应用+安全+mock 测试）、[GeoChat DSH 插件](https://github.com/tiwe0/GeoChat)（原生工具+技能+画布）。

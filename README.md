@@ -30,9 +30,9 @@ dsh-plugin-developer/
 │   │   ├── scripts/build.mjs       #   esbuild 打包 client + 三大自检
 │   │   ├── scripts/dev-sandbox.*   #   隔离 DSH_HOME 开发循环（sh + ps1）
 │   │   └── test/host.test.mjs      #   9 个单测（node --test，不依赖 dsh）
-│   └── examples/                   # 历史案例（0.1.x 构建链，API 思路仍可参考）
-│       ├── weather-plugin/         #   案例①：查天气 + 动效卡片
-│       └── ecom-details-image-plugin/ # 案例②：Claude Skill→dsh 插件，代理异步出图
+│   └── examples/
+│       ├── dsh-seedance-studio/    # 案例①：0.2.x 实战（外部 CLI 生成工具+侧栏面板+skill 快照）
+│       └── weather-plugin/         # 案例②：历史案例（0.1.x 构建链，查天气+动效卡片，API 思路仍可参考）
 └── references/                     # 按需加载的深度文档（14 篇）
     ├── architecture.md             # 0.2.x 双半边模型、dsh.* 字段、Config、版本声明
     ├── plugin-types.md             # 能力面地图 + 四种类型选型
@@ -54,7 +54,7 @@ dsh-plugin-developer/
 1. **先读 `SKILL.md`**：按第 0~6 步执行（选型→环境→骨架→实现→构建→测试→发布）。
 2. **按需读 references**（渐进式加载，别一次全读）。
 3. **生成骨架**：`python scripts/scaffold_plugin.py <目录> --name dsh-my-plugin`，先跑 `npm test && npm run build` 确认基线，再填充逻辑。
-4. **对照蓝本**：能力疑问先看 `assets/plugin-skeleton/` 对应文件；外部 API/图生图思路看 `assets/examples/ecom-details-image-plugin/`。
+4. **对照蓝本**：能力疑问先看 `assets/plugin-skeleton/` 对应文件；外部生成 API/CLI 集成看 `assets/examples/dsh-seedance-studio/`。
 
 ## 给用户的快速说明
 
@@ -87,7 +87,7 @@ dsh-plugin-developer/
 - [dsh-guizang-design](https://github.com/op7418/dsh-guizang-design)（歸藏/op7418）— 附《dsh插件开发教程》，技能包+页面+工具模式的范本
 - [dsh-media-desk](https://github.com/woniuniuniu/dsh-media-desk)（蜗牛的科技笔记）— HTTP 型插件、安全加固、mock 测试工作流
 - [GeoChat](https://github.com/tiwe0/GeoChat)（tiwe0）— 原生工具+55 技能+离线资源的 DSH 插件
-- 历史案例 weather-plugin / ecom-details-image-plugin 与 linux.do 社区
+- 历史案例 weather-plugin（以及已被 dsh-seedance-studio 替代的 ecom-details-image-plugin）与 linux.do 社区
 
 ## License
 

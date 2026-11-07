@@ -115,6 +115,8 @@ function addendum(skill) {                          // 按技能名追加插件�
 
 **用测试钉住**（guizang 的做法，直接抄）：断言 rewrite 后正文无 git 命令（`/git -C|git fetch|git pull|rev-list/`）、addendum 存在且含工具名、**addendum 不含 `.mjs`**（防止模型去跑脚本——沙箱写不了数据目录，必败）。
 
+> 另一个现成实现：`assets/examples/dsh-seedance-studio/lib/skills.js`（120 行）——快照扫描 + frontmatter 解析 + `<SKILL_ROOT>` 替换 + **信息量很大的 addendum**（插件环境说明、项目目录约定、标准执行顺序、画布与积分纪律），它的 addendum 写法值得抄。
+
 ## rank 让位机制
 
 ```js

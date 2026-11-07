@@ -35,6 +35,7 @@
 
 | 插件 | 形态 | 能力组合 |
 | --- | --- | --- |
+| **dsh-seedance-studio**（随库案例） | CLI 生成工具 + 面板 | skill 快照 + 4 个多动作工具（外部 CLI/积分上限/dryRun）+ webServer 只读接口 + 侧栏面板（轮询进度，与工具共用校验）+ 离线自检 |
 | dsh-guizang-design | 技能包 + 页面 | 5 skills（快照聚合）+ 2 工具（写库）+ 侧栏页面（iframe + HTTP 静态服务）+ 数据目录 + 开新对话草稿 |
 | dsh-media-desk | Web 应用 | HTTP 前缀路由 + 5 页 React 应用 + 宿主模型调用 + 生图 API + 密钥管理 + 鉴权加固 |
 | dsh-context | 数据仪表板 | 会话投影（sessionProjections）+ 9 条 HTTP 路由 + 会话标签页 + 右侧面板 + `/context` 命令 + 设置卡片 + i18n |

@@ -1,6 +1,6 @@
 # 常见坑与排错（0.2.x 实战合集）
 
-> 来源：weather/ecom 两案例的 0.1.x 踩坑（部分仍有效）+ guizang 插件的十条实测坑 + media-desk/geochat/dsh-context 的工程教训。
+> 来源：weather 案例（0.1.x，部分仍有效）+ 旧出图案例（已被 `assets/examples/dsh-seedance-studio/` 替代，其经验沉淀于下文）+ guizang 插件的十条实测坑 + media-desk/geochat/dsh-context 的工程教训。
 
 ## 目录
 - [环境与安装报错速查](#环境与安装报错速查)
@@ -70,7 +70,7 @@ guizang 插件从 0.1.1→0.1.3 修出来的经验，全部通用：
 
 ## 调外部生成 API 的坑
 
-> 来自 ecom-details-image-plugin（apimart 图片 API）实测。凡是"调外部图片/视频/长作业 API"都要注意。
+> 出图部分来自旧出图案例（apimart）实测；出片部分来自 `assets/examples/dsh-seedance-studio/`（即梦 dreamina-canvas）实测。凡是"调外部图片/视频/长作业 API 或 CLI"都要注意。
 
 | 现象 | 原因 | 解决 |
 | --- | --- | --- |
@@ -79,8 +79,10 @@ guizang 插件从 0.1.1→0.1.3 修出来的经验，全部通用：
 | 工具每次被校验拒绝 | 返回值与 output.schema 不一致 | 字段完全一致（见上） |
 | 轮询偶发 `ECONNRESET` | 代理链路不稳 | 轮询 GET 有限重试（3 次递增间隔）；先查任务状态再下结论 |
 | 参考图没有公网 URL | 只有本地路径/聊天附件 | 附件与本地文件方案（http-client.md） |
-| 长任务前端白屏 | 无渲染反馈 | 骨架屏加载占位 → 完成后挂卡片（browser-side.md） |
+| 长任务前端白屏 | 无渲染反馈 | 骨架屏加载占位 → 完成后挂卡片（browser-side.md）；面板轮询进度（dsh-seedance-studio 用 2s setInterval） |
 | 任务真超时了结果却成功 | 网络误报 | 先查任务状态接口再判定失败；幂等登记防重复 |
+| 报价超过预算还继续跑 | 没有费用护栏 | 单次积分/金额上限（如 maxCredits），超限直接拒绝，绝不静默扣费；先 `dryRun` 看命令 |
+| 模型名/参数写死后服务端变了 | 平台模型会更新 | 模型与分辨率以 CLI/HTTP 的实时 `model list` 为准，代码不写死 |
 
 > 先独立验证外部 API 本身（脚本直调、确认 key、确认代理），再联调插件——把"API 可用性"和"插件代码正确性"分开排查。
 

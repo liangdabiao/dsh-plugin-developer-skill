@@ -1,0 +1,48 @@
+{
+  "name": "dsh-seedance-studio",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "description": "上美影短剧工坊：随包提供上美影风格 Seedance 分镜 skill，并用即梦官方 CLI（dreamina-canvas）在画布上出图、出片、拼接成片，侧栏带项目面板。",
+  "exports": {
+    ".": "./index.js",
+    "./client": "./client.js",
+    "./locale/*.json": "./locale/*.json",
+    "./icon": "./icon.svg",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "index.js",
+    "client.js",
+    "lib",
+    "skills",
+    "locale/*.json",
+    "cordis.patch.yml",
+    "icon.svg",
+    "README.md"
+  ],
+  "icon": "./icon.svg",
+  "keywords": [
+    "dsh-plugin",
+    "deepseek-harness",
+    "seedance",
+    "dreamina",
+    "jimeng",
+    "storyboard",
+    "short-drama"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "immediately": true,
+      "inject": []
+    }
+  },
+  "engines": {
+    "dsh": ">=0.2.1-rc.2 <0.3.0"
+  },
+  "license": "MIT"
+}

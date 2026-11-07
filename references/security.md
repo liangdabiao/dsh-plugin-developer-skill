@@ -68,7 +68,7 @@ function isPrivateAddress(ip) { /* 10/8、172.16/12、192.168/16、127/8、169.2
 | 密钥落盘 | 优先官方 `ctx.credentials.modifyRecord()`（应用内凭证）；第三方 API Key 自管文件用 `mode: 0o600` + chmod + 原子 rename，与内容数据分开 | media-desk `settings.js` |
 | 密钥回流 | 浏览器只见 `hasKey` + 末四位 keyHint；**密钥不发文字模型** | media-desk `publicSettings` |
 | 密钥进日志 | 错误消息过 `redact()` 替换成 `***`；不 console.log 配置对象 | media-desk `images.js` |
-| 密钥进产物 | 环境变量/配置文件注入，绝不硬编码进代码或打包产物 | ecom 插件教训 |
+| 密钥进产物 | 环境变量/配置文件注入，绝不硬编码进代码或打包产物 | 实测教训 |
 
 ## 浏览器端
 
