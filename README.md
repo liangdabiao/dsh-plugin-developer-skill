@@ -87,7 +87,9 @@ dsh-plugin-developer/
 - [dsh-guizang-design](https://github.com/op7418/dsh-guizang-design)（歸藏/op7418）— 附《dsh插件开发教程》，技能包+页面+工具模式的范本
 - [dsh-media-desk](https://github.com/woniuniuniu/dsh-media-desk)（蜗牛的科技笔记）— HTTP 型插件、安全加固、mock 测试工作流
 - [GeoChat](https://github.com/tiwe0/GeoChat)（tiwe0）— 原生工具+55 技能+离线资源的 DSH 插件
-- 历史案例 weather-plugin（以及已被 dsh-seedance-studio 替代的 ecom-details-image-plugin）与 linux.do 社区
+- 历史案例 weather-plugin（以及已被 dsh-seedance-studio 替代的 ecom-details-image-plugin）与 特别致谢社区支持： https://linux.do
+
+
 
 ## License
 
