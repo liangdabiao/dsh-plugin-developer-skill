@@ -100,7 +100,8 @@ exports.apply = apply
     "manifestVersion": 1,              // GeoChat 用；最新清单版本号
     "compatibility": { "dshReleases": { "0.2.1-rc.2+": "compatible" } }  // 可选：按线声明兼容
   },
-  "peerDependencies": { "@deepseek-ai/schemastery": "^3.18.0" },  // 只声明真正 import 的 SDK 包
+  "dependencies": { "@deepseek-ai/schemastery": "^3.19.0" },  // 必须落盘安装：link: 模式只写 peers 拿不到 ~standard，cordis 校验 Config 抛 TypeError
+  "peerDependencies": { "@deepseek-ai/schemastery": ">=3.18.0" },  // 与宿主同款，双写
   "devDependencies": { "esbuild": "^0.25.10" }
 }
 ```
