@@ -177,7 +177,7 @@ export function apply(ctx, config) { /* config 已校验并填好默认值 */ }
 
 - 用户在 cordis.yml/profile 层用 `config:` 字段覆盖，或通过插件市场页面的 Configuration 卡片（dsh-context 模式）修改；**改配置 = 热替换插件**（旧实例卸载、新实例加载，effect 注册自动清理）。
 - 不要把普通对象导出为 `Config`——Cordis 需要它实现 Standard Schema 接口（`~standard`）。
-- `@deepseek-ai/schemastery` 是宿主同款；作为 peerDependency 声明 `"^3.18.0"`（版本下限）。
+-  声明为 **dependencies（）+ peerDependencies 双写**——link: 模式安装必须靠 dependencies 落盘，只写 peers 会在 cordis 校验 Config 时抛 TypeError（无 ~standard 接口）。
 - 设计原则：**凡是两个部署可能想设不同值的都做成配置字段**；自包含约束写进 schema，加载时大声失败。
 
 **插件运行中改自己的配置**（官方 configEditor 服务，别去手改 profile 的 cordis.patch.yml——那是用户的文件）：
